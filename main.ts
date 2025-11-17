@@ -286,7 +286,7 @@ export default class HotkeysPlus extends Plugin {
       return spaces + '1. ' + sentence;
     } else if (startText === '') {
       return spaces + '- ' + sentence;
-    } else if (startText === '1. ') {
+    } else if (/\d+\. /.test(startText)) {
       return spaces + '' + sentence;
     } else {
       return spaces + '- ' + sentence;
@@ -328,3 +328,4 @@ export default class HotkeysPlus extends Plugin {
     }
   }
 }
+
