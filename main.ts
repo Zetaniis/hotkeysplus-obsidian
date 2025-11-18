@@ -241,16 +241,14 @@ export default class HotkeysPlus extends Plugin {
     const editor = view.editor;
     const selection = editor.somethingSelected();
     const selectedText = this.getSelectedText(editor);
-
+    const originalCursor = view.editor.getCursor();
     const newString = selectedText.content.replace(re, subst);
     editor.replaceRange(newString, selectedText.start, selectedText.end);
 
-    // Keep cursor in the same place
+    // Keep cursor in the same place (more or less)
     if (selection) {
-      editor.setSelection(selectedText.start, {
-        line: selectedText.end.line,
-        ch: editor.getLine(selectedText.end.line).length,
-      });
+      const anchor = (originalCursor.line == selectedText.end.line) ?  selectedText.start  : {line: selectedText.end.line, ch: Math.min(selectedText.end.ch, editor.getLine(selectedText.end.line).length)};
+      editor.setSelection(anchor, originalCursor);
     }
   }
 
